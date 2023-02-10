@@ -5,9 +5,6 @@
 # https://hub.docker.com/_/ruby
 FROM ruby:3.1 AS ruby_build
 
-# Explicitly STDOUT that an image is being built
-RUN echo "now building..."
-
 # Obtaining the required packages 
 # RUN apt update -qq && apt install -y postgresql-client
 RUN apt update -qq && apt install -y --no-cache --no-install-recommends vim
