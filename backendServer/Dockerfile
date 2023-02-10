@@ -13,17 +13,17 @@ RUN echo "now building..."
 RUN apt update -qq && apt install -y --no-cache --no-install-recommends vim
 
 # Make Rails app's folder
-RUN mkdir /rails
-# Move to Rails folder in the container
-WORKDIR /rails
+RUN mkdir /app
+# Move to app folder in the container
+WORKDIR /app
 
 # Copy the some file's that exists on the host machine to the container.
-COPY Gemfile /rails/Gemfile
-COPY Gemfile.lock /rails/Gemfile.lock
+COPY Gemfile /app/Gemfile
+COPY Gemfile.lock /app/Gemfile.lock
 
 # Install Ruby Gem's in Host machine
 RUN bundle install
-COPY . /rails
+COPY . /app
 
 
 
