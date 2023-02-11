@@ -7,7 +7,8 @@ FROM ruby:3.1 AS ruby_build
 
 # Obtaining the required packages 
 # RUN apt update -qq && apt install -y postgresql-client
-RUN apt update -qq && apt install -y --no-cache --no-install-recommends vim
+# RUN apt update -qq && apt install -y --no-cache --no-install-recommends vim # no-cacheできない
+RUN apt update -qq && apt install -y --no-install-recommends vim
 
 # Make Rails app's folder
 RUN mkdir /myapp
