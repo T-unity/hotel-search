@@ -10,25 +10,23 @@ FROM ruby:3.1 AS ruby_build
 RUN apt update -qq && apt install -y --no-cache --no-install-recommends vim
 
 # Make Rails app's folder
-RUN mkdir /app
-# Move to app folder in the container
-WORKDIR /app
+RUN mkdir /myapp
+# Move to myapp folder in the container
+WORKDIR /myapp
 
 # Copy the some file's that exists on the host machine to the container.
-COPY Gemfile /app/Gemfile
-COPY Gemfile.lock /app/Gemfile.lock
+# COPY Gemfile /myapp/Gemfile
+# COPY Gemfile.lock /myapp/Gemfile.lock
+COPY Gemfile .
+COPY Gemfile.lock .
 
 # Install Ruby Gem's in Host machine
-RUN bundle install
-COPY . /app
+# RUN bundle install
+RUN bundle install --jobs=2
+COPY . /myapp
 
-
-
-# COPY entrypoint.sh /usr/bin/
-# RUN chmod +x /usr/bin/entrypoint.sh
-
-# ENTRYPOINT ["entrypoint.sh"]
-# EXPOSE 3000
-
-# # コンテナ起動時に実行するコマンド。
-# CMD ["rails", "server", "-b", "0.0.0.0"]
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
+EXPOSE 3000
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
