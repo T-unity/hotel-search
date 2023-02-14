@@ -23,11 +23,18 @@ COPY Gemfile.lock .
 
 # Install Ruby Gem's in Host machine
 # RUN bundle install
+RUN gem install bundler
 RUN bundle install --jobs=2
+
 COPY . /myapp
 
-COPY entrypoint.sh /usr/bin/
+# COPY entrypoint.sh /usr/bin/
+COPY ./containers/rails/entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
-EXPOSE 3000
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+
+# 3000番ポートを開ける必要がない。
+# EXPOSE 3000
+# CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+
+CMD ["sh", "./docker/web/start-server.sh"]
