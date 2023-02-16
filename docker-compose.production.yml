@@ -1,42 +1,30 @@
 version: "3.9"
 services:
-  # DB container
-  db:
-    image: mysql:8.0
-    environment:
-      TZ: Asia/Tokyo
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "3306:3306"
-    volumes:
-      - db:/var/lib/mysql
-
-  # Rails container
+  # Rails
   app:
-    build: .
-    command: bundle exec puma -C config/puma.rb -e production
+    build:
+      context: .
+      dockerfile: ./containers/rails/Dockerfile
+    command: bundle exec puma -C config/puma.rb
     environment:
       DB_HOST: db
     volumes:
       - .:/myapp
-      - public-data:/myapp/public
-      - tmp-data:/myapp/tmp
-      - log-data:/myapp/log
-    ports:
-      - "3000:3000"
+      - public:/myapp/public
+      - tmp:/myapp/tmp
     env_file:
       - .env
-    depends_on:
-      - db
-    user: root
+    stdin_open: true
+    tty: true
 
-  # Nginx container
+  # Nginx
   web:
     build:
       context: containers/nginx
     volumes:
-      - public-data:/myapp/public
-      - tmp-data:/myapp/tmp
+      - ./containers/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - public:/myapp/public
+      - tmp:/myapp/tmp
     ports:
       - 80:80
     depends_on:
@@ -44,4 +32,5 @@ services:
 
 volumes:
   bundle:
-  db:
+  tmp:
+  public:
