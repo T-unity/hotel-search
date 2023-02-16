@@ -19,10 +19,14 @@ RUN bundle install --jobs=2
 
 COPY . /myapp
 
-# COPY entrypoint.sh /usr/bin/
 COPY ./containers/rails/entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
+
+# For Nginx container
+RUN mkdir -p tmp/sockets
+VOLUME /sample-app/public
+VOLUME /sample-app/tmp
 
 # Execute command
 CMD ["sh", "./docker/web/start-server.sh"]
