@@ -1,8 +1,10 @@
 ## 参照
 
-以下のあたりが良さそう。
-
 https://itoka.hatenadiary.com/entry/2022/03/04/004453
+
+https://www.tohoho-web.com/docker/dockerfile.html
+
+https://www.wakuwakubank.com/posts/270-docker-build-image/
 
 ## このリポジトリの使い方。
 
