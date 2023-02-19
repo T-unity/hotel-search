@@ -2,8 +2,9 @@ version: "3.9"
 services:
   # Rails
   app:
-    image: ${ECR_RAILS_REPO}
-    command: bash -c "bundle exec rails db:migrate && bundle exec puma -C config/puma.rb"
+    # image: ${ECR_RAILS_REPO}
+    image: 958182677996.dkr.ecr.ap-northeast-1.amazonaws.com/rails
+    command: bash -c "bundle exec rails db:migrate && bundle exec puma -C config/puma.rb -e production"
     volumes:
       - .:/myapp
       - public:/myapp/public
@@ -19,7 +20,8 @@ services:
 
   # Nginx
   web:
-    image: ${ECR_NGINX_REPO}
+    # image: ${ECR_NGINX_REPO}
+    image: 958182677996.dkr.ecr.ap-northeast-1.amazonaws.com/nginx
     volumes:
       - ./containers/nginx/nginx.conf:/etc/nginx/nginx.conf
       - public:/myapp/public
