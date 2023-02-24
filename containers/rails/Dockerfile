@@ -20,13 +20,19 @@ RUN bundle install --jobs=2
 COPY . /myapp
 
 COPY ./containers/rails/entrypoint.sh /usr/bin/
+# COPY ./entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 
 # For Nginx container
 RUN mkdir -p tmp/sockets
+RUN touch tmp/sockets/puma.sock
+RUN mkdir -p tmp/pids
+
 VOLUME /sample-app/public
 VOLUME /sample-app/tmp
 
 # Execute command
 CMD ["sh", "./docker/web/start-server.sh"]
+
+# CMD /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec puma -C config/puma.rb"
